@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Add Patient | Health Prediction System</title>
+    <!-- Google Fonts + Font Awesome 6 (free icons) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 30%, #dceefb, #c2dfef);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.25rem;
+        }
+
+        /* Main card - modern glassmorphism + smooth edges */
+        .container {
+            max-width: 680px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(2px);
+            border-radius: 2.2rem;
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            padding: 2rem 2rem 2.2rem;
+            transition: all 0.2s ease;
+        }
+
+        /* Header with animated gradient */
+        .header-section {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(125deg, #1B6B6F, #2A9D8F, #38B2AC);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 i {
+            background: none;
+            color: #2A9D8F;
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+        }
+
+        .badge-info {
+            display: inline-block;
+            background: #eef4fc;
+            border-radius: 60px;
+            padding: 0.3rem 1.1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #2c6e7e;
+            margin-top: 10px;
+            backdrop-filter: blur(2px);
+        }
+
+        .badge-info i {
+            margin-right: 5px;
+            font-size: 0.7rem;
+        }
+
+        /* Modern form styling */
+        .form-grid {
+            margin-top: 1rem;
+        }
+
+        .input-field {
+            margin-bottom: 1.45rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-field label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #2b5f6b;
+            margin-bottom: 0.45rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-field label i {
+            width: 24px;
+            font-size: 0.9rem;
+            color: #2A9D8F;
+        }
+
+        .input-field input,
+        .input-field select,
+        .input-field textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-family: 'Inter', monospace;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1.8px solid #e4edf2;
+            border-radius: 1.2rem;
+            background-color: #ffffff;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.4, 1);
+            outline: none;
+            color: #1d3e4b;
+        }
+
+        .input-field input:focus {
+            border-color: #2A9D8F;
+            box-shadow: 0 0 0 4px rgba(42, 157, 143, 0.15);
+            transform: scale(1.01);
+        }
+
+        .input-field input:hover {
+            border-color: #b8d5e0;
+            background-color: #fefefe;
+        }
+
+        /* helper text under fields */
+        .helper-note {
+            font-size: 0.7rem;
+            color: #7c9aa8;
+            margin-top: 0.35rem;
+            margin-left: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* action button */
+        .save-btn {
+            width: 100%;
+            background: linear-gradient(100deg, #2A9D8F, #1f7e72);
+            color: white;
+            border: none;
+            padding: 0.95rem 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 3rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            letter-spacing: 0.3px;
+            margin-top: 1rem;
+            box-shadow: 0 8px 20px rgba(42, 157, 143, 0.3);
+        }
+
+        .save-btn i {
+            font-size: 1.1rem;
+        }
+
+        .save-btn:hover {
+            background: linear-gradient(100deg, #21867a, #18685e);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 26px rgba(42, 157, 143, 0.4);
+        }
+
+        .save-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* back link modern */
+        .back-action {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-action a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #3b7486;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ecf3f8;
+            padding: 0.55rem 1.6rem;
+            border-radius: 40px;
+            transition: all 0.2s;
+        }
+
+        .back-action a i {
+            transition: transform 0.2s;
+        }
+
+        .back-action a:hover {
+            background: #dee9f0;
+            color: #205c6e;
+            transform: translateX(-5px);
+        }
+
+        .back-action a:hover i {
+            transform: translateX(-3px);
+        }
+
+        hr {
+            margin: 1.3rem 0 0.2rem;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, #cce1ea, transparent);
+        }
+
+        /* special style for required star */
+        .required-star {
+            color: #e76f51;
+            font-size: 0.7rem;
+            margin-left: 4px;
+        }
+
+        /* Responsive touch */
+        @media (max-width: 550px) {
+            .container {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .input-field input {
+                padding: 0.7rem 0.9rem;
+                font-size: 0.85rem;
+            }
+            .save-btn {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Custom error style */
+        .field-error {
+            border-color: #e76f51 !important;
+            background-color: #fff7f5 !important;
+        }
+        .custom-error-message {
+            font-size: 0.7rem;
+            color: #e76f51;
+            margin-top: 5px;
+            margin-left: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h1>
+            <i class="fas fa-user-plus"></i>
+            Add Patient
+        </h1>
+        <div class="badge-info">
+            <i class="fas fa-microscope"></i> Clinical decision support system
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <form method="POST" id="addPatientForm" novalidate>
+            <!-- FULL NAME -->
+            <div class="input-field">
+                <label><i class="fas fa-user-circle"></i> Full Name <span class="required-star">*</span></label>
+                <input type="text"
+                       name="full_name"
+                       placeholder="e.g., Dr. Sarah Chen"
+                       required
+                       autocomplete="name"
+                       id="fullName">
+                <div class="helper-note"><i class="fas fa-id-card"></i> Legal name for medical records</div>
+            </div>
+
+            <!-- DATE OF BIRTH -->
+            <div class="input-field">
+                <label><i class="fas fa-calendar-alt"></i> Date of Birth <span class="required-star">*</span></label>
+                <input type="date"
+                       name="dob"
+                       required
+                       id="dob">
+                <div class="helper-note"><i class="fas fa-birthday-cake"></i> Used for age-based predictive analytics</div>
+            </div>
+
+            <!-- EMAIL ADDRESS -->
+            <div class="input-field">
+                <label><i class="fas fa-envelope"></i> Email Address <span class="required-star">*</span></label>
+                <input type="email"
+                       name="email"
+                       placeholder="patient@clinic.com"
+                       required
+                       autocomplete="email"
+                       id="email">
+                <div class="helper-note"><i class="fas fa-shield-alt"></i> Private & secure, health reports delivery</div>
+            </div>
+
+            <!-- GLUCOSE -->
+            <div class="input-field">
+                <label><i class="fas fa-tint"></i> Glucose (mg/dL) <span class="required-star">*</span></label>
+                <input type="text"
+                       name="glucose"
+                       placeholder="e.g., 95"
+                       required
+                       id="glucose">
+                <div class="helper-note"><i class="fas fa-chart-line"></i> Normal range: 70-99 mg/dL (fasting)</div>
+            </div>
+
+            <!-- HAEMOGLOBIN -->
+            <div class="input-field">
+                <label><i class="fas fa-droplet"></i> Haemoglobin (g/dL) <span class="required-star">*</span></label>
+                <input type="text"
+                       name="haemoglobin"
+                       placeholder="e.g., 13.5"
+                       required
+                       id="haemoglobin">
+                <div class="helper-note"><i class="fas fa-heartbeat"></i> Normal: ♂ 13.8–17.2 | ♀ 12.1–15.1 g/dL</div>
+            </div>
+
+            <!-- CHOLESTEROL -->
+            <div class="input-field">
+                <label><i class="fas fa-capsules"></i> Total Cholesterol (mg/dL) <span class="required-star">*</span></label>
+                <input type="text"
+                       name="cholesterol"
+                       placeholder="e.g., 185"
+                       required
+                       id="cholesterol">
+                <div class="helper-note"><i class="fas fa-chart-pie"></i> Desirable &lt;200 mg/dL | Borderline 200-239</div>
+            </div>
+
+            <button type="submit" class="save-btn">
+                <i class="fas fa-save"></i> Save Patient & Predict
+            </button>
+        </form>
+    </div>
+
+    <hr>
+
+    <div class="back-action">
+        <a href="/">
+            <i class="fas fa-arrow-left"></i> Return to Health Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Client-side validation with friendly realtime feedback -->
+<script>
+    (function(){
+        const form = document.getElementById('addPatientForm');
+
+        // get all relevant fields
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const glucoseInput = document.getElementById('glucose');
+        const haemoglobinInput = document.getElementById('haemoglobin');
+        const cholesterolInput = document.getElementById('cholesterol');
+        const dobInput = document.getElementById('dob');
+
+        // helper to remove custom error styling
+        function clearFieldError(input) {
+            input.classList.remove('field-error');
+            const existingErr = input.parentNode.querySelector('.custom-error-message');
+            if(existingErr) existingErr.remove();
+        }
+
+        function showFieldError(input, message) {
+            input.classList.add('field-error');
+            let existingErr = input.parentNode.querySelector('.custom-error-message');
+            if(existingErr) existingErr.remove();
+            const errDiv = document.createElement('div');
+            errDiv.className = 'custom-error-message';
+            errDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            input.parentNode.appendChild(errDiv);
+            // auto clear after 3 seconds if user hasn't fixed? but we keep until user fixes
+            // but better to keep - user will retype
+        }
+
+        // numeric validator (positive float)
+        function isValidPositiveNumber(value) {
+            if(value.trim() === "") return false;
+            const num = parseFloat(value);
+            if(isNaN(num)) return false;
+            return num >= 0;
+        }
+
+        // realtime clear error on input
+        function attachRealtimeClear(input, validatorFn = null) {
+            input.addEventListener('input', function() {
+                clearFieldError(input);
+                if(validatorFn && !validatorFn(input.value)) {
+                    // optional: we can show warning but not aggressive, keep clean
+                }
+            });
+        }
+
+        attachRealtimeClear(fullNameInput);
+        attachRealtimeClear(emailInput);
+        attachRealtimeClear(dobInput);
+        attachRealtimeClear(glucoseInput, (val) => isValidPositiveNumber(val));
+        attachRealtimeClear(haemoglobinInput, (val) => isValidPositiveNumber(val));
+        attachRealtimeClear(cholesterolInput, (val) => isValidPositiveNumber(val));
+
+        // Final submit validation
+        form.addEventListener('submit', function(e) {
+            let isValidOverall = true;
+
+            // Full name check
+            if(!fullNameInput.value.trim()) {
+                showFieldError(fullNameInput, "Patient's full name is required");
+                isValidOverall = false;
+            } else {
+                clearFieldError(fullNameInput);
+            }
+
+            // email validation
+            const emailVal = emailInput.value.trim();
+            const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+            if(!emailVal || !emailPattern.test(emailVal)) {
+                showFieldError(emailInput, "Valid email address required (e.g., name@example.com)");
+                isValidOverall = false;
+            } else {
+                clearFieldError(emailInput);
+            }
+
+            // DOB validation
+            if(!dobInput.value) {
+                showFieldError(dobInput, "Please select date of birth");
+                isValidOverall = false;
+            } else {
+                const dobDate = new Date(dobInput.value);
+                const today = new Date();
+                let age = today.getFullYear() - dobDate.getFullYear();
+                const m = today.getMonth() - dobDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) age--;
+                if (age < 0 || age > 120) {
+                    showFieldError(dobInput, "Please enter a valid DOB (age between 0-120 years)");
+                    isValidOverall = false;
+                } else {
+                    clearFieldError(dobInput);
+                }
+            }
+
+            // Glucose
+            if(!isValidPositiveNumber(glucoseInput.value)) {
+                showFieldError(glucoseInput, "Glucose must be a positive number (e.g., 98.5)");
+                isValidOverall = false;
+            } else {
+                const glucVal = parseFloat(glucoseInput.value);
+                if(glucVal > 600) {
+                    showFieldError(glucoseInput, "Glucose value seems extreme (>600 mg/dL). Please verify.");
+                    isValidOverall = false;
+                } else {
+                    clearFieldError(glucoseInput);
+                }
+            }
+
+            // Haemoglobin
+            if(!isValidPositiveNumber(haemoglobinInput.value)) {
+                showFieldError(haemoglobinInput, "Haemoglobin must be numeric (e.g., 14.2)");
+                isValidOverall = false;
+            } else {
+                const hbVal = parseFloat(haemoglobinInput.value);
+                if(hbVal > 25 || hbVal < 3) {
+                    showFieldError(haemoglobinInput, "Haemoglobin out of typical range (3-25 g/dL). Check value.");
+                    isValidOverall = false;
+                } else {
+                    clearFieldError(haemoglobinInput);
+                }
+            }
+
+            // Cholesterol
+            if(!isValidPositiveNumber(cholesterolInput.value)) {
+                showFieldError(cholesterolInput, "Cholesterol must be a positive number (e.g., 190)");
+                isValidOverall = false;
+            } else {
+                const cholVal = parseFloat(cholesterolInput.value);
+                if(cholVal > 800) {
+                    showFieldError(cholesterolInput, "Cholesterol value seems extreme (>800 mg/dL). Please confirm.");
+                    isValidOverall = false;
+                } else {
+                    clearFieldError(cholesterolInput);
+                }
+            }
+
+            if(!isValidOverall) {
+                e.preventDefault();
+                // scroll to first error
+                const firstError = document.querySelector('.field-error');
+                if(firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    })();
+</script>
+</body>
+</html>
